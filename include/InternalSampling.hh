@@ -37,16 +37,16 @@ public:
 	InternalSource(TETModelImport* tetData);
 	virtual ~InternalSource();
 
-	void SetSource(int source);
+	void SetSource(std::vector<int> sources);
 	void GetAprimaryPos(G4ThreeVector &pos);
 
-	int GetSource() 	const {return sourceID;}
+	std::vector<int>  GetSource() 	const {return sourceIDs;}
 
 private:
 	G4ThreeVector RandomSamplingInTet(G4Tet* tet);
 
 private:
-    int                   sourceID;
+    std::vector<int>      sourceIDs;
     TETModelImport*       tetData;
     std::vector<VOLPICK>  tetPick;
 };
