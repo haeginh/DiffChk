@@ -74,7 +74,6 @@ void CalculateCLD(string fileName, vector<pair<string, pair<vector<int>, vector<
 
 		//merge
 		map<int, int> finalBin;
-		int maxBin(0);
 		for(auto db:distBin){
 			for(auto aBin:db)
 				finalBin[aBin.first] = finalBin[aBin.first] + aBin.second;
@@ -82,11 +81,11 @@ void CalculateCLD(string fileName, vector<pair<string, pair<vector<int>, vector<
 
 		string file = fileName + "_" + iter.first + ".cld";
 		ofstream ofs(file);
-		for(auto a:iter.second.first)  ofs<<a<<" "; ofs<<"/ ";
-		for(auto b:iter.second.second) ofs<<b<<" "; ofs<<endl;
+		for(auto aa:iter.second.first)  ofs<<aa<<" "; ofs<<"/ ";
+		for(auto bb:iter.second.second) ofs<<bb<<" "; ofs<<endl;
 		int max = finalBin.crbegin()->first;
 		for(int i=0;i<max+2;i++)
-			ofs<<i<<"\t"<<finalBin[i]<<"\n";
+			ofs<<i<<"\t"<<finalBin[i]/(double)samplingNum<<"\n";
 		ofs.close();
 	}
 	return;

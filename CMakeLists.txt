@@ -2,7 +2,7 @@
 # Setup the project
 #
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(DiffChk)
+project(CLD_Tet)
 set(CMAKE_CXX_STANDARD 14)
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -35,8 +35,8 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(DiffChk DiffChk.cc ${sources} ${headers})
-target_link_libraries(DiffChk ${Geant4_LIBRARIES} OpenMP::OpenMP_CXX)
+add_executable(CLD_Tet CLD_Tet.cc ${sources} ${headers})
+target_link_libraries(CLD_Tet ${Geant4_LIBRARIES} OpenMP::OpenMP_CXX)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
