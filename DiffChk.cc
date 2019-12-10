@@ -9,15 +9,24 @@
 #include "HDCalculator.hh"
 
 void PrintUsage(){
-
+	cout<<"USAGE: ./DiffChk [options] (tet. phan. w/o suffix) (vox. phan.)"<<endl;
+	cout<<"OPTIONS:"<<endl;
+	cout<<setw(5)<<"-cd "<<"option for calculating CD"<<endl;
+	cout<<setw(5)<<"-di "<<"option for calculating DI"<<endl;
+	cout<<setw(5)<<"-hd "<<"option for calculating HD"<<endl;
+	cout<<setw(5)<<"-f "<<"file name that contains organ info. (see organs.txt)"<<endl;
+	cout<<setw(5)<<"-n "<<"sampling number (default: 1E7)"<<endl;
+	cout<<setw(5)<<"-t "<<"the number of threads (default: 1)"<<endl;
+	cout<<setw(5)<<"-o "<<"output file name (default: out.txt)"<<endl;
 }
 int main(int argc, char** argv){
 	bool cdSwitch (false);
 	bool diSwitch(false);
 	bool hdSwitch(false);
-	string organFile, outName, tetName, voxName;
+	string organFile, outName("out.txt"), tetName, voxName;
 	int samplingNum(1e7);
 	omp_set_num_threads(1);
+	if(argc==1) {PrintUsage(); return 1;}
 	for(int i=1;i<argc;i++){
 		if(string(argv[i])=="-cd")
 			cdSwitch=true;
