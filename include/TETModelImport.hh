@@ -73,7 +73,11 @@ public:
 	G4ThreeVector GetPhantomSize()           { return phantomSize; }
 	G4ThreeVector GetPhantomBoxMin()         { return boundingBox_Min; }
 	G4ThreeVector GetPhantomBoxMax()         { return boundingBox_Max; }
-
+	vector<G4int> GetAnElement(int idx){
+		vector<G4int> ele = {eleVector[idx][0], eleVector[idx][1], eleVector[idx][2], eleVector[idx][3]};
+		sort(ele.begin(), ele.end()); return ele;
+	}
+	G4ThreeVector GetAVertiex(int idx)       {return vertexVector[idx];}
 private:
 	void DataRead(G4String, G4String);
 	void PrintInfomation();
