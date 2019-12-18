@@ -9,6 +9,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4Timer.hh"
+#include <iomanip>
 
 VOXModelImport::VOXModelImport(string _phantomName)
 :phantomName(_phantomName)
