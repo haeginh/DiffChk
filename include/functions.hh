@@ -31,10 +31,14 @@ SELECTED ReadOrganFile
 	SELECTED selected;
 	while(getline(ifs, dump)){
 		stringstream ss(dump);
-		string sTet, sVox; vector<int> tet, vox;
-		ss>>dump>>quoted(sTet)>>quoted(sVox); int intTemp;
-		ss.clear(); ss.str(sTet); while(ss>>intTemp) tet.push_back(intTemp);
-		ss.clear(); ss.str(sVox); while(ss>>intTemp) vox.push_back(intTemp);
+		string sTet; vector<int> tet, vox;
+		ss>>dump;
+		while(ss>>sTet){
+			if(sTet=="/") break;
+			tet.push_back(atoi(sTet.c_str()));
+		}
+		int intTemp;
+		while(ss>>intTemp) vox.push_back(intTemp);
 		selected.push_back(make_pair(dump, make_pair(tet, vox)));
 	}
 	ifs.close();

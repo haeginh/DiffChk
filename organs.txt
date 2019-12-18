@@ -1,2 +1,2 @@
-liver 102 95
-brain 153 61
+liver 102 1 / 95 1
+brain 153 / 61
