@@ -12,7 +12,7 @@
 #include "Randomize.hh"
 #include <iterator>
 
-HDCalculator::HDCalculator(vector<pair<string, pair<int, int>>> _selected, TETModelImport* _tetPhan, VOXModelImport* _voxPhan, int _samplingNum)
+HDCalculator::HDCalculator(SELECTED _selected, TETModelImport* _tetPhan, VOXModelImport* _voxPhan, int _samplingNum)
 : selected(_selected), samplingNum(_samplingNum), tetPhan(_tetPhan), voxPhan(_voxPhan)
 {
 	voxTrans = -voxPhan->GetPhantomSize()*0.5;
@@ -75,11 +75,12 @@ vector<pair<double, int>> HDCalculator::ArrangeFacetArea(G4TessellatedSolid* aTe
 	return facetArea;
 }
 
-G4TessellatedSolid* HDCalculator::ExtractTetBoundary(G4int idx)
+G4TessellatedSolid* HDCalculator::ExtractTetBoundary(vector<G4int> idx)
 {
 	map<INT3, bool> facePool;
+	set<int> idxSet(idx.begin(), idx.end());
 	for(int i=0;i<tetPhan->GetNumTotTet();i++){
-		if(tetPhan->GetMaterialIndex(i)!=idx) continue;
+		if(idxSet.find(tetPhan->GetMaterialIndex(i))==idxSet.end()) continue;
 		auto ele = tetPhan->GetAnElement(i);
 		INT3 a = INT3(ele[1], ele[2], ele[3]);
 		INT3 b = INT3(ele[0], ele[2], ele[3]);
@@ -126,8 +127,9 @@ G4ThreeVector HDCalculator::GetAPointOnTetSurface(G4TessellatedSolid* tess){
 	}
 	return point;
 }
-G4TessellatedSolid* HDCalculator::ExtractVoxBoundary(G4int idx)
+G4TessellatedSolid* HDCalculator::ExtractVoxBoundary(vector<G4int> idx)
 {
+	set<int> idxSet(idx.begin(), idx.end());
 	int dimX, dimY, dimZ;
 	tie(dimX, dimY, dimZ) = voxPhan->GetVoxelDim();
 	map<int, vector<pair<int, int>>> xPos, xNeg, yPos, yNeg, zPos, zNeg;
@@ -135,7 +137,7 @@ G4TessellatedSolid* HDCalculator::ExtractVoxBoundary(G4int idx)
 		for (int j = 0; j < dimY; j++) {
 			for (int i = 0; i < dimX; i++) {
 				int index = (dimX*dimY)*k + dimX * j + i;
-				if (voxPhan->GetVoxelIdx(index) != idx) continue;
+				if (idxSet.find(voxPhan->GetVoxelIdx(index)) == idxSet.end()) continue;
 				//-x 비교
 				if (i == 0)
 					xNeg[i].push_back(make_pair(j, k));

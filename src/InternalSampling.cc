@@ -22,14 +22,15 @@ InternalSource::InternalSource(TETModelImport* _tetData)
 InternalSource::~InternalSource()
 {}
 
-void InternalSource::SetSource(int source)
+void InternalSource::SetSource(vector<int> source)
 {
 	//Cout
 	tetPick.clear();
 
 	//Extract source tet IDs
+	set<int> sourceSet(source.begin(), source.end());
 	for(G4int i=0;i<tetData->GetNumTotTet();i++){
-		if(tetData->GetMaterialIndex(i)==source)
+		if(sourceSet.find(tetData->GetMaterialIndex(i))!=sourceSet.end())
 			tetPick.push_back(VOLPICK(tetData->GetTetrahedron(i)->GetCubicVolume(), i));
 	}
 

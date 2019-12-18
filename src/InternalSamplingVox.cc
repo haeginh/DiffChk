@@ -25,15 +25,16 @@ InternalSourceVox::InternalSourceVox(VOXModelImport* _voxData)
 InternalSourceVox::~InternalSourceVox()
 {}
 
-void InternalSourceVox::SetSource(int source)
+void InternalSourceVox::SetSource(vector<int> source)
 {
 	sourceVoxels.clear();
 	INT3 voxDim = voxData->GetVoxelDim();
+	set<int> sourceSet(source.begin(), source.end());
 	for(int k=0;k<get<2>(voxDim);k++){
 		for(int j=0;j<get<1>(voxDim);j++){
 			for(int i=0;i<get<0>(voxDim);i++){
 				int idx = i + j*get<0>(voxDim) + k*get<0>(voxDim)*get<1>(voxDim);
-				if(voxData->GetVoxelIdx(idx)==source)
+				if(sourceSet.find(voxData->GetVoxelIdx(idx))!=sourceSet.end())
 					sourceVoxels.push_back(INT3(i, j, k));
 			}
 		}

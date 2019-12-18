@@ -21,10 +21,8 @@ public:
 	InternalSourceVox(VOXModelImport* voxData);
 	~InternalSourceVox();
 
-	void SetSource(int source);
+	void SetSource(vector<int> source);
 	void GetAprimaryPos(G4ThreeVector &pos);
-
-	int GetSource() 	        const{return sourceID;}
 
 	bool IsInside(G4ThreeVector point);
 
@@ -32,7 +30,6 @@ private:
 	G4ThreeVector RandomSamplingInAVox(INT3 ijk);
 
 private:
-    int                   sourceID;
     VOXModelImport*       voxData;
     std::vector<INT3>     sourceVoxels;
     std::set<INT3>        sourceVoxelsSet;

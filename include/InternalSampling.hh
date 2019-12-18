@@ -14,39 +14,21 @@
 
 #include <vector>
 
-class SourceGenerator
-{
-public:
-	virtual ~SourceGenerator() {};
-	virtual void GetAprimaryPos(G4ThreeVector &pos)
-	{pos = G4ThreeVector(); }
-	void SetExternal() {isExternal = true; isInternal = false;}
-	void SetInternal() {isInternal = true; isExternal = false;}
-	G4bool IsExternal() {return isExternal;}
-	G4bool IsInternal() {return isInternal;}
-private:
-	G4bool isExternal = false;
-	G4bool isInternal = false;
-};
-
 class    TETModelImport;
 typedef  std::pair<G4double, G4int> VOLPICK;
-class InternalSource: public SourceGenerator
+class InternalSource
 {
 public:
 	InternalSource(TETModelImport* tetData);
-	virtual ~InternalSource();
+	~InternalSource();
 
-	void SetSource(int source);
+	void SetSource(vector<int> source);
 	void GetAprimaryPos(G4ThreeVector &pos);
-
-	int GetSource() 	const {return sourceID;}
 
 private:
 	G4ThreeVector RandomSamplingInTet(G4Tet* tet);
 
 private:
-    int                   sourceID;
     TETModelImport*       tetData;
     std::vector<VOLPICK>  tetPick;
 };

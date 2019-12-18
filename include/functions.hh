@@ -14,9 +14,11 @@
 #include "InternalSamplingVox.hh"
 #include "G4Timer.hh"
 #include <omp.h>
+#include <iomanip>
 using namespace std;
 
-vector<pair<string, pair<int, int>>> ReadOrganFile
+typedef vector<pair<string, pair<vector<int>, vector<int>>>> SELECTED;
+SELECTED ReadOrganFile
   (string fileName, TETModelImport* tetModel, VOXModelImport* voxModel)
 {
 	ifstream ifs(fileName);
@@ -26,11 +28,13 @@ vector<pair<string, pair<int, int>>> ReadOrganFile
 	}
 
 	string dump;
-	vector<pair<string, pair<int, int>>> selected;
+	SELECTED selected;
 	while(getline(ifs, dump)){
 		stringstream ss(dump);
-		int tet, vox;
-		ss>>dump>>tet>>vox;
+		string sTet, sVox; vector<int> tet, vox;
+		ss>>dump>>quoted(sTet)>>quoted(sVox); int intTemp;
+		ss.clear(); ss.str(sTet); while(ss>>intTemp) tet.push_back(intTemp);
+		ss.clear(); ss.str(sVox); while(ss>>intTemp) vox.push_back(intTemp);
 		selected.push_back(make_pair(dump, make_pair(tet, vox)));
 	}
 	ifs.close();
@@ -42,27 +46,39 @@ vector<pair<string, pair<int, int>>> ReadOrganFile
 					 *voxModel->GetVoxelSize().getZ();
 	cout << endl
 		 << setw(15) << "Organ Name"
-		 << setw(11) << "tet ID"
+		 << setw(15) << "tet ID"
 		 << setw(11) << "tet #"
 	     << setw(11) << "tet vol"
-		 << setw(11) << "vox ID"
+		 << setw(15) << "vox ID"
 		 << setw(11) << "vox #"
 	     << setw(11) << "vox vol"<<endl;
-	cout << "---------------------------------------------------------------------------------"<<endl;
+	cout << "-----------------------------------------------------------------------------------------"<<endl;
 	for(auto iter:selected){
+		int tetNum(0); double tetVol(0.); string tetString;
+		for(auto idx:iter.second.first){
+			tetNum+=tetModel->GetNumTet(idx);
+			tetVol+=tetModel->GetVolume(idx);
+			tetString += to_string(idx) + "/";
+		}
+		int voxNum(0); string voxString;
+		for(auto idx:iter.second.second){
+			voxNum+=voxModel->GetNumVoxel(idx);
+			voxString += to_string(idx) + "/";
+		}
+
 		cout<<setw(15)<<iter.first
-			<<setw(11)<<iter.second.first
-			<<setw(11)<<tetModel->GetNumTet(iter.second.first)
-			<<setw(11)<<tetModel->GetVolume(iter.second.first)/cm3
-			<<setw(11)<<iter.second.second
-			<<setw(11)<<voxModel->GetNumVoxel(iter.second.second)
-			<<setw(11)<<voxModel->GetNumVoxel(iter.second.second)*voxelVol/cm3<<endl;
+			<<setw(15)<<tetString
+			<<setw(11)<<tetNum
+			<<setw(11)<<tetVol/cm3
+			<<setw(15)<<voxString
+			<<setw(11)<<voxNum
+			<<setw(11)<<voxNum*voxelVol/cm3<<endl;
 	}
 	cout<<endl;
 	return selected;
 }
 
-vector<double> CalculateCD(vector<pair<string, pair<int, int>>> selected,
+vector<double> CalculateCD(SELECTED selected,
 		          TETModelImport* tetPhan, VOXModelImport* voxPhan, int samplingNum)
 {
 	vector<double> cdVec;
@@ -86,7 +102,7 @@ vector<double> CalculateCD(vector<pair<string, pair<int, int>>> selected,
 	return cdVec;
 }
 
-vector<double> CalculateDI(vector<pair<string, pair<int, int>>> selected,
+vector<double> CalculateDI(SELECTED selected,
 		          TETModelImport* tetPhan, VOXModelImport* voxPhan, int samplingNum)
 {
 	vector<double> diVec;
@@ -102,8 +118,9 @@ vector<double> CalculateDI(vector<pair<string, pair<int, int>>> selected,
 			tetInternal.GetAprimaryPos(tetPoint);
 			if(voxInternal.IsInside(tetPoint)) count++;
 		}
-		double tetVol = tetPhan->GetVolume(iter.second.first);
-		double voxVol = (double)voxPhan->GetNumVoxel(iter.second.second)*voxPhan->GetVoxelVol();
+		double tetVol(0.); double voxVol(0.);
+		for(auto id:iter.second.first) tetVol += tetPhan->GetVolume(id);
+		for(auto id:iter.second.second) voxVol += (double)voxPhan->GetNumVoxel(id)*voxPhan->GetVoxelVol();
 		double di = ((double)count/(double)samplingNum)*tetVol*2./(tetVol+voxVol);
 		diVec.push_back(di);
 	}
