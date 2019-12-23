@@ -44,10 +44,13 @@ private:
 	G4ThreeVector  voxelSize;
 	double         voxelVol;
 	INT3           voxelDim;
-	char *         voxelData;
+	int *          voxelData;
 	map<int, int>  organVoxels;
 	G4ThreeVector  phantomSize;
 
+	//air separator
+	bool chkET, chkStomach;
+	int etSepZ, stmSepZ;
 
 	string Filename;
 

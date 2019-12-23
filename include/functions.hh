@@ -57,26 +57,33 @@ SELECTED ReadOrganFile
 		 << setw(11) << "vox #"
 	     << setw(11) << "vox vol"<<endl;
 	cout << "-----------------------------------------------------------------------------------------"<<endl;
-	for(auto iter:selected){
+	for(auto it = selected.begin();it!=selected.end();){
 		int tetNum(0); double tetVol(0.); string tetString;
-		for(auto idx:iter.second.first){
+		for(auto idx:it->second.first){
 			tetNum+=tetModel->GetNumTet(idx);
 			tetVol+=tetModel->GetVolume(idx);
 			tetString += to_string(idx) + "/";
 		}
 		int voxNum(0); string voxString;
-		for(auto idx:iter.second.second){
+		for(auto idx:it->second.second){
 			voxNum+=voxModel->GetNumVoxel(idx);
 			voxString += to_string(idx) + "/";
 		}
 
-		cout<<setw(15)<<iter.first
+		cout<<setw(15)<<it->first
 			<<setw(15)<<tetString
 			<<setw(11)<<tetNum
 			<<setw(11)<<tetVol/cm3
 			<<setw(15)<<voxString
 			<<setw(11)<<voxNum
-			<<setw(11)<<voxNum*voxelVol/cm3<<endl;
+			<<setw(11)<<voxNum*voxelVol/cm3;
+
+		if(tetNum==0 || voxNum==0){
+			it = selected.erase(it);
+			cout<<" > EXCLUDED";
+		}
+		else ++it;
+		cout<<endl;
 	}
 	cout<<endl;
 	return selected;
@@ -87,6 +94,8 @@ vector<double> CalculateCD(SELECTED selected,
 {
 	vector<double> cdVec;
 	for(auto iter:selected){
+		cout<<"\t"<<iter.first<<"..."<<flush;
+		G4Timer timer; timer.Start();
 		InternalSource tetInternal(tetPhan);
 		tetInternal.SetSource(iter.second.first);
 		InternalSourceVox voxInternal(voxPhan);
@@ -102,6 +111,8 @@ vector<double> CalculateCD(SELECTED selected,
 		}
 		double cd=(G4ThreeVector(tx, ty, tz)-G4ThreeVector(vx, vy, vz)).mag()/(double)samplingNum;
 		cdVec.push_back(cd);
+		timer.Stop();
+		cout<<timer.GetRealElapsed()<<endl;
 	}
 	return cdVec;
 }
@@ -111,6 +122,8 @@ vector<double> CalculateDI(SELECTED selected,
 {
 	vector<double> diVec;
 	for(auto iter:selected){
+		cout<<"\t"<<iter.first<<"..."<<flush;
+		G4Timer timer; timer.Start();
 		InternalSource tetInternal(tetPhan);
 		tetInternal.SetSource(iter.second.first);
 		InternalSourceVox voxInternal(voxPhan);
@@ -127,6 +140,8 @@ vector<double> CalculateDI(SELECTED selected,
 		for(auto id:iter.second.second) voxVol += (double)voxPhan->GetNumVoxel(id)*voxPhan->GetVoxelVol();
 		double di = ((double)count/(double)samplingNum)*tetVol*2./(tetVol+voxVol);
 		diVec.push_back(di);
+		timer.Stop();
+		cout<<timer.GetRealElapsed()<<endl;
 	}
 	return diVec;
 }

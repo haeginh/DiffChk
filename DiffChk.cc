@@ -59,18 +59,14 @@ int main(int argc, char** argv){
 	vector<string> contents;
 	vector<vector<double>> values;
 	if(cdSwitch){
-		cout<<"Calculate CD.."<<flush;
-		G4Timer timer; timer.Start();
+		cout<<"Calculate CD.."<<endl;
 		contents.push_back("CD");
 		values.push_back(CalculateCD(selected, tetPhan, voxPhan, samplingNum));
-		timer.Stop(); cout<<timer.GetRealElapsed()<<endl;
 	}
 	if(diSwitch){
-		cout<<"Calculate DI.."<<flush;
-		G4Timer timer; timer.Start();
+		cout<<"Calculate DI.."<<endl;
 		contents.push_back("DI");
 		values.push_back(CalculateDI(selected, tetPhan, voxPhan, samplingNum));
-		timer.Stop(); cout<<timer.GetRealElapsed()<<endl;
 	}
 	if(hdSwitch){
 		cout<<"Calculate HD.."<<endl;

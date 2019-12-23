@@ -59,6 +59,25 @@ void VOXModelImport::SetPhantomInfo(string filename){
 		phantomSize.setX((double)fNx*voxelSize.x());
 		phantomSize.setY((double)fNy*voxelSize.y());
 		phantomSize.setZ((double)fNz*voxelSize.z());
+
+		double airHeight;
+		ss>>airHeight;
+		if(airHeight<0) chkET = false;
+		else{
+			chkET = true;
+			airHeight *= cm;
+			airHeight += phantomSize.getZ() * 0.5;
+			etSepZ = airHeight / voxelSize.getZ();
+		}
+
+		ss>>airHeight;
+		if(airHeight<0) chkStomach = false;
+		else{
+			chkStomach = true;
+			airHeight *= cm;
+			airHeight += phantomSize.getZ() * 0.5;
+			stmSepZ = airHeight / voxelSize.getZ();
+		}
 		break;
 	}
 
@@ -77,7 +96,8 @@ void VOXModelImport::ImportPhantomVoxelData(string voxelFile){
 	int64_t length = is.tellg();
 	is.seekg(0, is.beg);
 
-	voxelData = new char[length];
+	char *         rawData;
+	rawData = new char[length];
 	int fNx, fNy, fNz;
 	tie(fNx, fNy, fNz) = voxelDim;
 
@@ -89,7 +109,8 @@ void VOXModelImport::ImportPhantomVoxelData(string voxelFile){
 //	std::cout << "Reading " << length << " characters... ";
 
 	// read data as a block:
-	is.read(voxelData, length);
+	is.read(rawData, length);
+	voxelData = new int[length];
 
 //	if (is)
 //		std::cout << "all characters read successfully." << endl;
@@ -97,9 +118,13 @@ void VOXModelImport::ImportPhantomVoxelData(string voxelFile){
 		std::cout << "error: only " << is.gcount() << " could be read";
 	is.close();
 
+	int xy = get<0>(voxelDim) * get<1>(voxelDim);
 	for(int i=0;i<length;i++){
-		int idx = voxelData[i];
-		if(idx<0) voxelData[i] += 256;
+		int idx = rawData[i];
+		if(idx<0) voxelData[i] = idx + 256;
+		else      voxelData[i] = idx;
+		if(chkET && voxelData[i]==140 && floor(i/xy)>=etSepZ) voxelData[i] = 4;
+		if(chkStomach && voxelData[i]==140 && floor(i/xy)<stmSepZ+1) voxelData[i] = 73;
 		organVoxels[voxelData[i]] = organVoxels[voxelData[i]] +1;
 	}
 }
