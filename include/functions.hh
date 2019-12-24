@@ -112,7 +112,7 @@ vector<double> CalculateCD(SELECTED selected,
 		double cd=(G4ThreeVector(tx, ty, tz)-G4ThreeVector(vx, vy, vz)).mag()/(double)samplingNum;
 		cdVec.push_back(cd);
 		timer.Stop();
-		cout<<timer.GetRealElapsed()<<endl;
+		cout<<timer.GetRealElapsed()<<" -> "<<cd<<endl;
 	}
 	return cdVec;
 }
@@ -141,7 +141,7 @@ vector<double> CalculateDI(SELECTED selected,
 		double di = ((double)count/(double)samplingNum)*tetVol*2./(tetVol+voxVol);
 		diVec.push_back(di);
 		timer.Stop();
-		cout<<timer.GetRealElapsed()<<endl;
+		cout<<timer.GetRealElapsed()<<" -> "<<di<<endl;
 	}
 	return diVec;
 }

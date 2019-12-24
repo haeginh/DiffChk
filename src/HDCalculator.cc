@@ -44,15 +44,19 @@ double HDCalculator::CalculateHD(int idx)
 	//Calculate HD (tet->vox)
 	timer.Start();
 	double hd(0.);
+	ofstream ofs("chk.txt");
 #pragma omp parallel for reduction(max:hd)
 	for(int i=0;i<samplingNum;i++){
 		G4ThreeVector tetP = GetAPointOnTetSurface(tetTess);
 		double distTet = voxTess->DistanceToIn(tetP)+voxTess->DistanceToOut(tetP);
+		cout<<endl<<voxTess->DistanceToIn(tetP)<<"\t"<<voxTess->DistanceToOut(tetP)<<endl;
 		G4ThreeVector voxP = GetAPointOnVoxSurface(voxTess);
 		double distVox = tetTess->DistanceToIn(voxP)+tetTess->DistanceToOut(voxP);
+		cout<<tetTess->DistanceToIn(voxP)<<"\t"<<tetTess->DistanceToOut(voxP)<<endl;
 		double dist = max(distTet, distVox);
+		ofs<<tetP<<"\t"<<distTet<<voxP<<"\t"<<distVox<<endl;
 		if(hd<dist) hd = dist;
-	}
+	}ofs.close();getchar();
 	timer.Stop(); cout<<timer.GetRealElapsed()<<" -> "<<hd<<endl;
 	delete tetTess;
 	delete voxTess;
@@ -104,6 +108,7 @@ G4TessellatedSolid* HDCalculator::ExtractTetBoundary(vector<G4int> idx)
 											  tetPhan->GetAVertiex(c), ABSOLUTE));
 	}
 	aTess->SetSolidClosed(true);
+	cout<<aTess->GetCubicVolume();getchar();
 	return aTess;
 }
 
