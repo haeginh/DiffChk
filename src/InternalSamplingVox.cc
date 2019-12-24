@@ -55,7 +55,9 @@ void InternalSourceVox::GetAprimaryPos(G4ThreeVector &position)
 G4ThreeVector InternalSourceVox::RandomSamplingInAVox(INT3 selected){
 	double x, y, z;
 	tie(x, y, z) = selected;
-	G4ThreeVector sampledPos = G4ThreeVector(x*voxelSize.getX(), y*voxelSize.getY(), z*voxelSize.getZ()) + trans;
+	G4ThreeVector sampledPos = G4ThreeVector((x+G4UniformRand())*voxelSize.getX(),
+			                                 (y+G4UniformRand())*voxelSize.getY(),
+											 (z+G4UniformRand())*voxelSize.getZ()) + trans;
 	return sampledPos;
 }
 

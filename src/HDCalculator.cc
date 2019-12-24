@@ -94,7 +94,9 @@ G4TessellatedSolid* HDCalculator::ExtractTetBoundary(vector<G4int> idx)
 		if(!ret.second) ret.first->second = false; // when it was paired
 		ret = facePool.insert({b, true});
 		if(!ret.second) ret.first->second = false;
-		ret = facePool.insert({c, true});
+		ret =
+
+				facePool.insert({c, true});
 		if(!ret.second) ret.first->second = false;
 		ret = facePool.insert({d, true});
 		if(!ret.second) ret.first->second = false;
