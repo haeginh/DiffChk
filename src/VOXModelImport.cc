@@ -138,7 +138,10 @@ void VOXModelImport::ImportPhantomVoxelData(string voxelFile){
 	for(int i=0;i<length;i++){
 		if(voxelData[i]!=140) continue;
 		int zNum = floor(i/xy);
-		if(zNum>=minTrachea && zNum<=maxTrachea) voxelData[i]=7;
+		if(zNum<minTrachea) continue;
+		if(zNum>maxTrachea) continue;
+		voxelData[i] = 7;
+		organVoxels[7] = organVoxels[7] +1;
 	}
 }
 
