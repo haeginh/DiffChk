@@ -127,6 +127,19 @@ void VOXModelImport::ImportPhantomVoxelData(string voxelFile){
 		if(chkStomach && voxelData[i]==140 && floor(i/xy)<stmSepZ+1) voxelData[i] = 73;
 		organVoxels[voxelData[i]] = organVoxels[voxelData[i]] +1;
 	}
+	//extract trachea air
+	int maxTrachea(-1), minTrachea(100000);
+	for(int i=0;i<length;i++){
+		if(voxelData[i]!=7) continue;
+		int zNum = floor(i/xy);
+		if(zNum>maxTrachea) maxTrachea = zNum;
+		if(zNum<minTrachea) minTrachea = zNum;
+	}
+	for(int i=0;i<length;i++){
+		if(voxelData[i]!=140) continue;
+		int zNum = floor(i/xy);
+		if(zNum>=minTrachea && zNum<=maxTrachea) voxelData[i]=7;
+	}
 }
 
 void VOXModelImport::PrintInfomation(){
