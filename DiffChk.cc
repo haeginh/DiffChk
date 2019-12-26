@@ -58,10 +58,13 @@ int main(int argc, char** argv){
 
 	vector<string> contents;
 	vector<vector<double>> values;
+	vector<G4ThreeVector> cdCoordVec;
 	if(cdSwitch){
 		cout<<"Calculate CD.."<<endl;
-		contents.push_back("CD");
-		values.push_back(CalculateCD(selected, tetPhan, voxPhan, samplingNum));
+		contents.push_back("CD\tx\ty\tz");
+		auto val = CalculateCD(selected, tetPhan, voxPhan, samplingNum);
+		values.push_back(val.first);
+		cdCoordVec = val.second;
 	}
 	if(diSwitch){
 		cout<<"Calculate DI.."<<endl;
@@ -81,8 +84,13 @@ int main(int argc, char** argv){
 
 	for(size_t i=0;i<selected.size();i++){
 		ofs<<selected[i].first<<flush;
-		for(size_t j=0;j<values.size();j++)
+		for(size_t j=0;j<values.size();j++){
 			ofs<<"\t"<<values[j][i]<<flush;
+			if(contents[j]=="CD\tx\ty\tz"){
+				G4ThreeVector p = cdCoordVec[i];
+				ofs<<"\t"<<p.getX()<<"\t"<<p.getY()<<"\t"<<p.getZ();
+			}
+		}
 		ofs<<endl;
 	}
 	ofs.close();

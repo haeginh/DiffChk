@@ -89,10 +89,10 @@ SELECTED ReadOrganFile
 	return selected;
 }
 
-vector<double> CalculateCD(SELECTED selected,
+pair<vector<double>, vector<G4ThreeVector>> CalculateCD(SELECTED selected,
 		          TETModelImport* tetPhan, VOXModelImport* voxPhan, int samplingNum)
 {
-	vector<double> cdVec;
+	pair<vector<double>, vector<G4ThreeVector>> cdVec;
 	for(auto iter:selected){
 		cout<<"\t"<<iter.first<<"..."<<flush;
 		G4Timer timer; timer.Start();
@@ -109,10 +109,12 @@ vector<double> CalculateCD(SELECTED selected,
 			tx += tetPoint.getX(); ty += tetPoint.getY(); tz += tetPoint.getZ();
 			vx += voxPoint.getX(); vy += voxPoint.getY(); vz += voxPoint.getZ();
 		}
-		double cd=(G4ThreeVector(tx, ty, tz)-G4ThreeVector(vx, vy, vz)).mag()/(double)samplingNum;
-		cdVec.push_back(cd);
+		G4ThreeVector trans = (G4ThreeVector(tx, ty, tz)-G4ThreeVector(vx, vy, vz))/(double)samplingNum;
+		double cd=trans.mag();
+		cdVec.first.push_back(cd);
+		cdVec.second.push_back(trans);
 		timer.Stop();
-		cout<<timer.GetRealElapsed()<<" -> "<<cd<<endl;
+		cout<<timer.GetRealElapsed()<<" -> "<<cd<<" "<<trans<<endl;
 	}
 	return cdVec;
 }
