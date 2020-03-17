@@ -29,6 +29,7 @@ public:
     G4String GetInputFilename() {return Filename;}
     G4int GetVoxelResolution(G4int idx) {return voxelResolution[idx];}
     G4double GetVoxelSize(G4int idx) {return voxelSize[idx];}
+    G4ThreeVector GetPhantomSize()   {return phantomSize;}
     G4Material* GetVoxelMaterial(G4int idx) {return materialMap[idx];}
     G4double GetOrganVolume(G4int idx) {return organVolume[idx];}
     G4double GetOrganMass(G4int idx) {return organVolume[idx] * materialMap[idx]->GetDensity();}

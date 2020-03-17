@@ -21,10 +21,7 @@
 InternalSource::InternalSource(VOXModelImport* _voxData)
 :voxData(_voxData), isRBM(false)
 {
-    G4Box* phantomBox = (G4Box*) G4LogicalVolumeStore::GetInstance()->GetVolume("phantomLogical")->GetSolid();
-    base = G4ThreeVector(-phantomBox->GetXHalfLength(),
-                         -phantomBox->GetYHalfLength(),
-                         -phantomBox->GetZHalfLength());
+    base = -voxData->GetPhantomSize()*0.5;
 }
 
 InternalSource::~InternalSource()
@@ -34,11 +31,7 @@ void InternalSource::SetSource(std::vector<G4int> sources)
 {
     std::set<G4int>    sourceSet(sources.begin(), sources.end());
     voxPick.clear(); spPick.clear(); isRBM = false;
-    //Cout
-    std::stringstream ss;
-    ss<<"Set source organs for ";
-    for(auto source:sourceSet) ss<<source<<" ";
-    if(sources[0] == 0) {ss<<"(RBM)"; sourceSet.erase(0); isRBM = true;}
+    if(sources[0] == 0) {sourceSet.erase(0); isRBM = true;}
 
     //Extract source tet IDs
     if(!isRBM){
@@ -50,7 +43,6 @@ void InternalSource::SetSource(std::vector<G4int> sources)
                 }
             }
         }
-        ss<<" -> "<<voxPick[0].size()<<G4endl;
     }else{
         auto rbmRatio = voxData->GetRBMratio();
         for(auto sset:sourceSet){
@@ -78,9 +70,7 @@ void InternalSource::SetSource(std::vector<G4int> sources)
         }
         G4int count(0);
         for(auto vp:voxPick) count += vp.second.size();
-        ss<<" -> "<<count<<" ("<<voxPick.size()<<" regions)"<<G4endl;
     }
-    G4cout<<ss.str();
 }
 
 void InternalSource::GetAprimaryPos(G4ThreeVector &position)

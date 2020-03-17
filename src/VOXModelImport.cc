@@ -6,7 +6,7 @@
 VOXModelImport::VOXModelImport(G4String phantomFile)
 :Filename(phantomFile) {
     G4Timer timer; timer.Start();
-    cout << "Importing tet. phantom (" << phantomName << ")..."<< flush;
+    G4cout << "Importing tet. phantom (" << phantomFile << ")..."<< std::flush;
     G4String InformFile = "Phantom_information";
     G4String voxelFile = Filename+"_data";
     G4String RBMBSfile = Filename+"_RBMnBS";
@@ -17,7 +17,7 @@ VOXModelImport::VOXModelImport(G4String phantomFile)
     RBMBSRead(RBMBSfile);
 
     timer.Stop();
-    cout << timer.GetRealElapsed()<<endl;
+    G4cout << timer.GetRealElapsed()<<G4endl;
 }
 
 VOXModelImport::~VOXModelImport() {
