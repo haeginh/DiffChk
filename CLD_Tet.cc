@@ -8,7 +8,7 @@
 #include "functions.hh"
 
 void PrintUsage(){
-	cout<<"USAGE: ./CLD_TET [options] (tet. phan. w/o suffix)"<<endl;
+	cout<<"USAGE: ./CLD_Tet [options] (tet. phan. w/o suffix)"<<endl;
 	cout<<"OPTIONS:"<<endl;
 	cout<<setw(4)<<"-f "<<"file name that contains (see organs.txt)"<<endl;
 	cout<<setw(4)<<"-n "<<"sampling number (default:1E7)"<<endl;

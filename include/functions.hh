@@ -50,7 +50,7 @@ void CalculateCLD(string fileName, vector<pair<string, pair<vector<int>, vector<
     G4Timer timer; timer.Start();
     int count(1);
     for(auto iter:selected){
-        cout<<'\r'<<count++<<"/"<<selected.size()<<" : "<<iter.first<<"...source setting        "<<flush;
+        cout<<'\r'<<count<<"/"<<selected.size()<<" : "<<iter.first<<"...source setting        "<<flush;
 		InternalSource internalA(tetPhan);
 		internalA.SetSource(iter.second.first);
 		InternalSource internalB(tetPhan);
