@@ -40,9 +40,11 @@ TETModelImport::TETModelImport(G4String _phantomName)
 
 	G4String eleFile      =  phantomName + "ele";
 	G4String nodeFile     =  phantomName + "node";
+	G4String boneFile     =  phantomName + "RBMnBS";
 
 	// read phantom data files (*. ele, *.node)
 	DataRead(eleFile, nodeFile);
+	ReadRBMnBS(boneFile);
 	// print the summary of phantom information
 	//PrintInfomation();
 	timer.Stop();

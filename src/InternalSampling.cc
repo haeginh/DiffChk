@@ -39,6 +39,11 @@ void InternalSource::SetSource(std::vector<int> sources)
         }
     }else{
         auto rbmRatio = tetData->GetRBMRatio();
+	for(auto ss:sourceSet){
+            if(rbmRatio.find(ss)==rbmRatio.end()){
+                G4cerr<<ss<<" is not included in RBMnBS file!"<<G4endl; exit(0);
+            }
+        }
         for(G4int i=0;i<tetData->GetNumTotTet();i++){
             if(sourceSet.find(tetData->GetMaterialIndex(i)) != sourceSet.end())
                 tetPick.push_back(VOLPICK(tetData->GetTetrahedron(i)->GetCubicVolume()*rbmRatio[tetData->GetMaterialIndex(i)], i));
