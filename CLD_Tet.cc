@@ -22,13 +22,13 @@ int main(int argc, char** argv){
 	if(argc==1){PrintUsage(); return 1;}
 	for(int i=1;i<argc;i++){
 		if(string(argv[i])=="-f")
-			organFile = string(argv[(i++)+1]);
+			organFile = string(argv[++i]);
 		else if(string(argv[i])=="-n")
-			samplingNum = atoi(argv[(i++)+1]);
+			samplingNum = atoi(argv[++i]);
 		else if(string(argv[i])=="-t")
-			omp_set_num_threads(atoi(argv[(i++)+1]));
-		else if(string(argv[i])=="o")
-			outName = string(argv[(i++)+1]);
+			omp_set_num_threads(atoi(argv[++i]));
+		else if(string(argv[i])=="-o")
+			outName = string(argv[++i]);
 		else if(i==argc-1)
 			tetName = string(argv[i]);
 		else{
