@@ -1,20 +1,23 @@
 #include "VOXModelImport.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
+#include "G4Timer.hh"
 
 VOXModelImport::VOXModelImport(G4String phantomFile)
 :Filename(phantomFile) {
-
+    G4Timer timer; timer.Start();
+    cout << "Importing tet. phantom (" << phantomName << ")..."<< flush;
     G4String InformFile = "Phantom_information";
     G4String voxelFile = Filename+"_data";
-    G4String materialFile = Filename+"_material";
     G4String RBMBSfile = Filename+"_RBMnBS";
 
     ImportPhantomInfo(InformFile);
-    ImportPhantomVoxelMaterial(materialFile);
     ImportPhantomVoxelData(voxelFile);
     ImportPhantomVoxelVolume();
     RBMBSRead(RBMBSfile);
+
+    timer.Stop();
+    cout << timer.GetRealElapsed()<<endl;
 }
 
 VOXModelImport::~VOXModelImport() {
@@ -145,7 +148,7 @@ void VOXModelImport::ImportPhantomVoxelMaterial(G4String materialFile){
             if(materialIndexMap[idx][j].first==1) mat->AddElement(elH, materialIndexMap[idx][j].second);
             else mat->AddElement(nistManager->FindOrBuildElement(materialIndexMap[idx][j].first), materialIndexMap[idx][j].second);
         }
-        G4cout<<idx<<": "<<mat->GetName()<<" density: "<<mat->GetDensity()/(g/cm3)<<G4endl;
+//        G4cout<<idx<<": "<<mat->GetName()<<" density: "<<mat->GetDensity()/(g/cm3)<<G4endl;
         materialMap[idx]=mat;
     }
     ifp.close();
