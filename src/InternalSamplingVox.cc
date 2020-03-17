@@ -63,9 +63,9 @@ G4ThreeVector InternalSourceVox::RandomSamplingInAVox(INT3 selected){
 
 bool InternalSourceVox::IsInside(G4ThreeVector point){
 	point -= trans;
-	int fNx = point.getX()*voxelSizeInv.getX();
-	int fNy = point.getY()*voxelSizeInv.getY();
-	int fNz = point.getZ()*voxelSizeInv.getZ();
+	int fNx = floor(point.getX()*voxelSizeInv.getX());
+	int fNy = floor(point.getY()*voxelSizeInv.getY());
+	int fNz = floor(point.getZ()*voxelSizeInv.getZ());
 	if(sourceVoxelsSet.find(INT3(fNx, fNy, fNz))==sourceVoxelsSet.end()) return false;
 	return true;
 }
