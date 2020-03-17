@@ -8,7 +8,7 @@
 #ifndef INCLUDE_FUNCTIONS_HH_
 #define INCLUDE_FUNCTIONS_HH_
 
-#include "TETModelImport.hh"
+#include "VOXModelImport.hh"
 #include "InternalSampling.hh"
 #include "G4Timer.hh"
 #include <omp.h>
@@ -45,15 +45,15 @@ vector<pair<string, pair<vector<int>, vector<int>>>> ReadOrganFile
 }
 
 void CalculateCLD(string fileName, vector<pair<string, pair<vector<int>, vector<int>>>> selected,
-		          TETModelImport* tetPhan, int samplingNum)
+		          VOXModelImport* voxPhan, int samplingNum)
 {
     G4Timer timer; timer.Start();
     int count(1);
     for(auto iter:selected){
         cout<<'\r'<<count<<"/"<<selected.size()<<" : "<<iter.first<<"...source setting        "<<flush;
-		InternalSource internalA(tetPhan);
+		InternalSource internalA(voxPhan);
 		internalA.SetSource(iter.second.first);
-		InternalSource internalB(tetPhan);
+		InternalSource internalB(voxPhan);
 		internalB.SetSource(iter.second.second);
 		G4ThreeVector a, b;
 		vector<map<int, int>> distBin;
