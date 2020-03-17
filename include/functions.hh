@@ -27,6 +27,7 @@ vector<pair<string, pair<vector<int>, vector<int>>>> ReadOrganFile
 	string dump;
 	vector<pair<string, pair<vector<int>, vector<int>>>> selected;
 	while(getline(ifs, dump)){
+        if(dump.empty()) continue;
 		stringstream ss(dump);
 		string a, b;
 		//ss>>quoted(dump)>>quoted(a)>>quoted(b);
