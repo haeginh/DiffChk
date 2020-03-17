@@ -149,6 +149,20 @@ void TETModelImport::DataRead(G4String eleFile, G4String nodeFile)
 	ifpEle.close();
 }
 
+void TETModelImport::ReadRBMnBS(G4String bonefile){
+    std::ifstream ifs(bonefile);
+    if(!ifs.is_open()) {
+        // exception for the case when there is no *.material file
+        G4Exception("TETModelImport::RBMBSRead","",JustWarning,
+                G4String("      There is no " + bonefile ).c_str());
+        return;
+    }
+    G4int idx;
+    G4double rbm, bs;
+    while(ifs>>idx>>rbm>>bs){
+        rbmRatio[idx]=rbm;
+    }
+}
 
 void TETModelImport::PrintInfomation()
 {
@@ -169,3 +183,4 @@ void TETModelImport::PrintInfomation()
 			   << std::setw(11) << vm.second/cm3 << endl;    // organ volume
 	}
 }
+

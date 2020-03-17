@@ -1,2 +1,0 @@
-bones "1 2" 3
-brainLiver 102 153

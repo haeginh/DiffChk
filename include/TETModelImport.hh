@@ -62,7 +62,7 @@ class TETModelImport
 {
 public:
 	TETModelImport(G4String phantomName);
-	virtual ~TETModelImport() {};
+    virtual ~TETModelImport() {}
 
 	// get methods
 	int           GetNumTotTet()         {return tetVector.size();}
@@ -73,9 +73,11 @@ public:
 	G4ThreeVector GetPhantomSize()           { return phantomSize; }
 	G4ThreeVector GetPhantomBoxMin()         { return boundingBox_Min; }
 	G4ThreeVector GetPhantomBoxMax()         { return boundingBox_Max; }
+    std::map<G4int, G4double> GetRBMRatio()  {return rbmRatio;}
 
 private:
 	void DataRead(G4String, G4String);
+    void ReadRBMnBS(G4String);
 	void PrintInfomation();
 
 	G4String phantomName;
@@ -90,6 +92,8 @@ private:
 	std::vector<int>         organID;
 	std::map<int, int>     numTetMap;
 	std::map<int, double>  volumeMap;
+
+    std::map<G4int, G4double>  rbmRatio;
 };
 
 #endif

@@ -49,6 +49,8 @@ private:
     std::vector<int>      sourceIDs;
     TETModelImport*       tetData;
     std::vector<VOLPICK>  tetPick;
+
+    G4bool                isRBM;
 };
 
 

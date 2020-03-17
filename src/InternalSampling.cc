@@ -25,14 +25,25 @@ InternalSource::~InternalSource()
 void InternalSource::SetSource(std::vector<int> sources)
 {
 	//Cout
-	tetPick.clear();
+    tetPick.clear(); isRBM = false;
+    if(sources[0]==0){isRBM = true;}
 
 	//Extract source tet IDs
 	std::set<int> sourceSet(sources.begin(), sources.end());
-	for(G4int i=0;i<tetData->GetNumTotTet();i++){
-		if(sourceSet.find(tetData->GetMaterialIndex(i)) != sourceSet.end())
-			tetPick.push_back(VOLPICK(tetData->GetTetrahedron(i)->GetCubicVolume(), i));
-	}
+    if(isRBM) sourceSet.erase(0);
+
+    if(!isRBM){
+        for(G4int i=0;i<tetData->GetNumTotTet();i++){
+            if(sourceSet.find(tetData->GetMaterialIndex(i)) != sourceSet.end())
+                tetPick.push_back(VOLPICK(tetData->GetTetrahedron(i)->GetCubicVolume(), i));
+        }
+    }else{
+        auto rbmRatio = tetData->GetRBMRatio();
+        for(G4int i=0;i<tetData->GetNumTotTet();i++){
+            if(sourceSet.find(tetData->GetMaterialIndex(i)) != sourceSet.end())
+                tetPick.push_back(VOLPICK(tetData->GetTetrahedron(i)->GetCubicVolume()*rbmRatio[tetData->GetMaterialIndex(i)], i));
+        }
+    }
 
 	//Arrange volumes
 	std::sort(tetPick.begin(), tetPick.end());
