@@ -93,7 +93,7 @@ pair<vector<double>, vector<G4ThreeVector>> CalculateCD(SELECTED selected,
 		          TETModelImport* tetPhan, VOXModelImport* voxPhan, int samplingNum)
 {
 	pair<vector<double>, vector<G4ThreeVector>> cdVec;
-	G4ThreeVector minBox = tetPhan->GetPhantomBoxMin();//
+//	G4ThreeVector minBox = tetPhan->GetPhantomBoxMin();//
 	for(auto iter:selected){
 		cout<<"\t"<<iter.first<<"..."<<flush;
 		G4Timer timer; timer.Start();
@@ -101,7 +101,7 @@ pair<vector<double>, vector<G4ThreeVector>> CalculateCD(SELECTED selected,
 		tetInternal.SetSource(iter.second.first);
 		InternalSourceVox voxInternal(voxPhan);
 		voxInternal.SetSource(iter.second.second);
-		voxInternal.SetTrans(minBox);//
+//		voxInternal.SetTrans(minBox);//
 		G4ThreeVector tetPoint,voxPoint;
 		double tx(0.), ty(0.), tz(0.), vx(0.), vy(0.), vz(0.);
 #pragma omp parallel for private(tetPoint, voxPoint) reduction(+:tx, ty, tz, vx, vy, vz)
@@ -112,7 +112,7 @@ pair<vector<double>, vector<G4ThreeVector>> CalculateCD(SELECTED selected,
 			vx += voxPoint.getX(); vy += voxPoint.getY(); vz += voxPoint.getZ();
 		}
 		G4ThreeVector trans = (G4ThreeVector(tx, ty, tz)-G4ThreeVector(vx, vy, vz))/(double)samplingNum;
-		double cd=trans.mag();
+		double cd=trans.mag()/cm;
 		cdVec.first.push_back(cd);
 		cdVec.second.push_back(trans);
 		timer.Stop();
@@ -125,7 +125,7 @@ vector<double> CalculateDI(SELECTED selected,
 		          TETModelImport* tetPhan, VOXModelImport* voxPhan, int samplingNum)
 {
 	vector<double> diVec;
-	G4ThreeVector minBox = tetPhan->GetPhantomBoxMin();//
+//	G4ThreeVector minBox = tetPhan->GetPhantomBoxMin();//
 	for(auto iter:selected){
 		cout<<"\t"<<iter.first<<"..."<<flush;
 		G4Timer timer; timer.Start();
@@ -133,7 +133,7 @@ vector<double> CalculateDI(SELECTED selected,
 		tetInternal.SetSource(iter.second.first);
 		InternalSourceVox voxInternal(voxPhan);
 		voxInternal.SetSource(iter.second.second);
-		voxInternal.SetTrans(minBox);//
+//		voxInternal.SetTrans(minBox);//
 		G4ThreeVector tetPoint;
 		int count(0);
 #pragma omp parallel for private(tetPoint) reduction(+:count)

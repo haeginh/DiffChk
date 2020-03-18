@@ -26,7 +26,7 @@ public:
 
 	bool IsInside(G4ThreeVector point);
 
-	void SetTrans(G4ThreeVector _trans) {trans=_trans;}
+//	void SetTrans(G4ThreeVector _trans) {trans=_trans;}
 
 private:
 	G4ThreeVector RandomSamplingInAVox(INT3 ijk);
