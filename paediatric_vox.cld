@@ -3,7 +3,7 @@ Cortical-Colon "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" "76 78
 Cortical-Lungs "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" "96 97 98 99"
 Cortical-Stomach "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" 72
 Cortical-Breasts "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" "62 63 64 65"
-Cortical-Gonads "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" "111 112 129 138"
+Cortical-Gonads "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" "111 112 129 130"
 Cortical-UB "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" 137
 Cortical-Oeso "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" 110
 Cortical-Liver "13 16 19 22 24 26 28 31 34 37 39 41 43 45 47 49 51 53 55" 95
@@ -16,7 +16,7 @@ Liver-Colon 95 "76 78 80 82 84"
 Liver-Lungs 95 "96 97 98 99"
 Liver-Stomach 95 72
 Liver-Breasts 95 "62 63 64 65"
-Liver-Gonads 95 "111 112 129 138"
+Liver-Gonads 95 "111 112 129 130"
 Liver-UB 95 137
 Liver-Oeso 95 110
 Liver-Liver 95 95
@@ -29,7 +29,7 @@ Lungs-Colon "96 97 98 99" "76 78 80 82 84"
 Lungs-Lungs "96 97 98 99" "96 97 98 99"
 Lungs-Stomach "96 97 98 99" 72
 Lungs-Breasts "96 97 98 99" "62 63 64 65"
-Lungs-Gonads "96 97 98 99" "111 112 129 138"
+Lungs-Gonads "96 97 98 99" "111 112 129 130"
 Lungs-UB "96 97 98 99" 137
 Lungs-Oeso "96 97 98 99" 110
 Lungs-Liver "96 97 98 99" 95
@@ -42,7 +42,7 @@ Thyroid-Colon 132 "76 78 80 82 84"
 Thyroid-Lungs 132 "96 97 98 99"
 Thyroid-Stomach 132 72
 Thyroid-Breasts 132 "62 63 64 65"
-Thyroid-Gonads 132 "111 112 129 138"
+Thyroid-Gonads 132 "111 112 129 130"
 Thyroid-UB 132 137
 Thyroid-Oeso 132 110
 Thyroid-Liver 132 95
@@ -55,7 +55,7 @@ UBCon-Colon 138 "76 78 80 82 84"
 UBCon-Lungs 138 "96 97 98 99"
 UBCon-Stomach 138 72
 UBCon-Breasts 138 "62 63 64 65"
-UBCon-Gonads 138 "111 112 129 138"
+UBCon-Gonads 138 "111 112 129 130"
 UBCon-UB 138 137
 UBCon-Oeso 138 110
 UBCon-Liver 138 95
